@@ -39,7 +39,7 @@ const duration = 200;
 /**
  * author: @Eduardo_Marchandon
  * date: 07-06-2025
- * Esta funcion despliega una barera personalizada junto a una AppBar.
+ * Esta funcion despliega una barra personalizada junto a una AppBar.
  */
 
 export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
