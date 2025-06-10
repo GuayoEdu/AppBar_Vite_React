@@ -302,7 +302,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                                     top: '2.5px',
                                                 }}
                                             >
-                                                Control Stock O'Ryan
+                                                Your Company Name
                                             </Typography>
                                         }
                                         sx={{
@@ -327,7 +327,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                             <ListItemButton
                                 onClick={() => handleParentClick(parent.key)}
                                 sx={{
-                                  minHeight: 32, // Más pequeño
+                                  minHeight: 32,
                                   px: 1.5,
                                   justifyContent: 'initial',
                                   borderRadius: 1,
