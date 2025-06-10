@@ -12,7 +12,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/Inbox';
-import MailIcon from '@mui/icons-material/Mail';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import WarehouseIcon from '@mui/icons-material/WarehouseRounded';
@@ -300,7 +299,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                                     color: 'white',
                                                     fontWeight: 500,
                                                     position: 'relative',
-                                                    top: '2.5px', // Ajusta aquí: 2px o 3px según lo que prefieras
+                                                    top: '2.5px',
                                                 }}
                                             >
                                                 Control Stock O'Ryan
@@ -377,7 +376,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                     key={child.key}
                                     onClick={() => {
                                       handleChildClick(parent.key, child.key);
-                                      // Rutas según el key
+
                                       const routes = {
                                         stock: '/stock-actual',
                                         entrada: '/registros-entrada',
@@ -393,7 +392,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                       navigate(routes[child.key]);
                                     }}
                                     sx={{
-                                        minHeight: 28, // Más pequeño
+                                        minHeight: 28,
                                         px: 1.5,
                                         justifyContent: 'initial',
                                         borderRadius: 1,
