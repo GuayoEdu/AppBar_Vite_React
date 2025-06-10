@@ -69,8 +69,10 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
     setSelected({ parent: parentKey, child: childKey });
     };
 
+    //Dads and children menu items
     const menu = [
     {
+        //main dad
         key: 'registros',
         label: 'Registros',
         icon: <ListAltIcon />,
@@ -82,6 +84,8 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
         ],
     },
     {
+
+        //Childrens
         key: 'flujo',
         label: 'Flujo Sistema',
         icon: <PeopleIcon />,
