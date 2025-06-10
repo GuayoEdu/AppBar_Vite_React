@@ -1,46 +1,43 @@
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { useMediaQuery } from 'usehooks-ts';
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/Inbox';
 import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
-import WarehouseIcon from '@mui/icons-material/WarehouseRounded';
-import Typography from '@mui/material/Typography';
+import Collapse from '@mui/material/Collapse';
+
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
+import DriveFileMoveRoundedIcon from '@mui/icons-material/DriveFileMoveRounded';
+import DriveFileMoveRtlRoundedIcon from '@mui/icons-material/DriveFileMoveRtlRounded';
+import LockIcon from '@mui/icons-material/Lock';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
+import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
+import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
+import ManageHistoryRoundedIcon from '@mui/icons-material/ManageHistoryRounded';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import ImportExportIcon from '@mui/icons-material/ImportExport';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import LockIcon from '@mui/icons-material/Lock';
-import CategoryIcon from '@mui/icons-material/Category';
-import PeopleIcon from '@mui/icons-material/People';
-import Collapse from '@mui/material/Collapse';
-import { useNavigate } from 'react-router-dom';
 
-
-const drawerHeaderHeight = 48; // Altura en px, puedes cambiarla
-// Ancho del drawer expandido y mini drawer
+const drawerHeaderHeight = 48;
 const drawerWidth = 230;
 const miniDrawerWidth = 76;
-//Duracion de la animacion de la barra lateral en milisegundos
 const duration = 200;
-
-/**
- * author: @Eduardo_Marchandon
- * date: 07-06-2025
- * Esta funcion despliega una barra personalizada junto a una AppBar.
- */
 
 export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
     const isMobile = useMediaQuery('(max-width: 600px)');
@@ -52,64 +49,61 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
     const azul = 'rgb(37, 118, 240)';
     const plomo = '#e0e0e0';
 
-    // Estado para múltiples colapsados y selección
     const [openParents, setOpenParents] = useState({
-    registros: false,
-    flujo: false,
-    config: false,
+        registros: false,
+        flujo: false,
+        config: false,
     });
     const [selected, setSelected] = useState({ parent: 'config', child: 'categorias' });
 
     const handleParentClick = (key) => {
-    setOpenParents((prev) => ({ ...prev, [key]: !prev[key] }));
-    setSelected((prev) => ({ ...prev, parent: key }));
+        setOpenParents((prev) => ({ ...prev, [key]: !prev[key] }));
+        setSelected((prev) => ({ ...prev, parent: key }));
     };
 
     const handleChildClick = (parentKey, childKey) => {
-    setSelected({ parent: parentKey, child: childKey });
+        setSelected({ parent: parentKey, child: childKey });
     };
 
-    //Dads and children menu items
     const menu = [
-    {
-        //main dad
-        key: 'registros',
-        label: 'Registros',
-        icon: <ListAltIcon />,
-        children: [
-        { key: 'stock', label: 'Stock Actual', icon: <AssignmentIcon /> },
-        { key: 'entrada', label: 'Registros Entrada', icon: <ImportExportIcon /> },
-        { key: 'salida', label: 'Registros Salida', icon: <ImportExportIcon /> },
-        { key: 'bloqueos', label: 'Bloquear Registros', icon: <LockIcon /> },
-        ],
-    },
-    {
-
-        //Childrens
-        key: 'flujo',
-        label: 'Flujo Sistema',
-        icon: <PeopleIcon />,
-        children: [
-        { key: 'flujo', label: 'Flujo', icon: <ImportExportIcon /> },
-        ],
-    },
-    {
-        key: 'config',
-        label: 'Configuración',
-        icon: <SettingsIcon />,
-        children: [
-        { key: 'auditoria', label: 'Control auditoria', icon: <AssignmentIcon /> },
-        { key: 'productos', label: 'Productos', icon: <CategoryIcon /> },
-        { key: 'categorias', label: 'Categorias', icon: <CategoryIcon /> },
-        { key: 'unidad', label: 'Unidad Medida', icon: <InboxIcon /> },
-        { key: 'movimientos', label: 'Tipos de movimientos', icon: <ImportExportIcon /> },
-        ],
-    },
+        {
+            key: 'registros',
+            label: 'Registros',
+            icon: <ListAltIcon />,
+            children: [
+                { key: 'stock', label: 'Stock Actual', icon: <LayersRoundedIcon /> },
+                { key: 'entrada', label: 'Registros Entrada', icon: <DriveFileMoveRoundedIcon /> },
+                { key: 'salida', label: 'Registros Salida', icon: <DriveFileMoveRtlRoundedIcon /> },
+                { key: 'bloqueos', label: 'Bloquear Registros', icon: <LockIcon /> },
+            ],
+        },
+        {
+            key: 'flujo',
+            label: 'Flujo Sistema',
+            icon: <MenuBookRoundedIcon />,
+            children: [
+                { key: 'flujo', label: 'Flujo', icon: <ImportExportIcon /> },
+            ],
+        },
+        {
+            key: 'config',
+            label: 'Configuración',
+            icon: <SettingsIcon />,
+            children: [
+                { key: 'auditoria', label: 'Control auditoria', icon: <AssignmentIcon /> },
+                { key: 'productos', label: 'Productos', icon: <AccountBalanceRoundedIcon /> },
+                { key: 'categorias', label: 'Categorias', icon: <CategoryRoundedIcon /> },
+                { key: 'unidad', label: 'Unidad Medida', icon: <LocalLibraryRoundedIcon /> },
+                { key: 'movimientos', label: 'Tipos de movimientos', icon: <ManageHistoryRoundedIcon /> },
+            ],
+        },
     ];
+
     return (
         <Box sx={{ display: 'flex', flexGrow: 1 }}>
+            {/* AppBar superior */}
             <AppBar
-                position="fixed"
+                position="absolute"
                 sx={{
                     ml: isMobile ? 0 : `${drawerOpen ? drawerWidth : miniDrawerWidth}px`,
                     width: isMobile ? '100%' : `calc(100% - ${drawerOpen ? drawerWidth : miniDrawerWidth}px)`,
@@ -121,6 +115,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                     bgcolor: 'rgb(255, 255, 255)',
                     boxShadow: 'none',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+                    zIndex: theme.zIndex.appBar,
                 }}
             >
                 <Toolbar
@@ -133,7 +128,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                         position: 'relative',
                     }}
                 >
-                    
                     <Box
                         sx={{
                             position: 'absolute',
@@ -151,10 +145,10 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                             aria-label="menu"
                             onClick={() => setDrawerOpen(!drawerOpen)}
                         >
-                            <MenuIcon sx={{color:'rgb(84, 84, 84)'}} />
+                            <MenuIcon sx={{ color: 'rgb(84, 84, 84)' }} />
                         </IconButton>
                     </Box>
-                    
+
                     <Typography
                         variant="h6"
                         component="div"
@@ -173,7 +167,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                     >
                         {title}
                     </Typography>
-                    
+
                     <Box
                         sx={{
                             position: 'absolute',
@@ -183,7 +177,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                             display: 'flex',
                             alignItems: 'center',
                             color: 'rgb(84, 84, 84)',
-                            
                         }}
                     >
                         <Button
@@ -191,10 +184,10 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                 bgcolor: 'rgb(37, 118, 240)',
                                 color: 'white',
                                 '&:hover': {
-                                    bgcolor: 'rgb(25, 94, 192)', 
+                                    bgcolor: 'rgb(25, 94, 192)',
                                 },
                                 textTransform: 'none',
-                                fontWeight: 500
+                                fontWeight: 500,
                             }}
                         >
                             Cerrar Sesión
@@ -202,6 +195,8 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                     </Box>
                 </Toolbar>
             </AppBar>
+
+            {/* Overlay para mobile */}
             {isMobile && drawerOpen && (
                 <Box
                     onClick={() => setDrawerOpen(false)}
@@ -234,6 +229,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                 />
             )}
 
+            {/* Sidebar */}
             <Box
                 onMouseEnter={() => !isMobile && setDrawerHover(true)}
                 onMouseLeave={() => !isMobile && setDrawerHover(false)}
@@ -258,7 +254,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                     bgcolor: 'rgb(255, 255, 255)',
                 }}
             >
-                
                 <Box
                     sx={{
                         borderRight: 'none',
@@ -267,7 +262,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                         pointerEvents: isMobile && !drawerOpen ? 'none' : 'auto',
                     }}
                 >
-                    
                     <Box sx={{ borderRight: 'none', bgcolor: 'rgb(37, 118, 240)', display: 'flex', alignItems: 'center', height: drawerHeaderHeight, px: 0 }}>
                         <List sx={{ width: '100%', p: 0 }}>
                             <ListItem disablePadding sx={{ display: 'block' }}>
@@ -306,7 +300,7 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                                     top: '2.5px',
                                                 }}
                                             >
-                                                Your Company Name
+                                                App Bar System lol
                                             </Typography>
                                         }
                                         sx={{
@@ -321,129 +315,125 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                         </List>
                     </Box>
 
-                    <List sx={{ width: '100%', p: 4 }}>
-
-                    </List>
+                    <List sx={{ width: '100%', p: 4 }}></List>
                     <Divider />
                     <List sx={{ width: '100%', p: 0 }}>
                         {menu.map((parent) => (
                             <Box key={parent.key}>
-                            <ListItemButton
-                                onClick={() => handleParentClick(parent.key)}
-                                sx={{
-                                  minHeight: 32,
-                                  px: 1.5,
-                                  justifyContent: 'initial',
-                                  borderRadius: 1,
-                                  mx: 0.25,
-                                  my: 0.25,
-                                  bgcolor: selected.parent === parent.key ? azul : 'transparent',
-                                  color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)',
-                                  '&:hover': { bgcolor: azul, color: 'white' },
-                                  fontWeight: selected.parent === parent.key ? 700 : 500,
-                                }}
-                            >
-                                <ListItemIcon sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(33, 33, 33)', minWidth: 0, justifyContent: 'center', mr: 1, fontSize: 17 }}>
-                                {parent.icon}
-                                </ListItemIcon>
-                                <ListItemText
-                                primary={
-                                    <Typography
-                                    fontSize={12}
+                                <ListItemButton
+                                    onClick={() => handleParentClick(parent.key)}
                                     sx={{
-                                        color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)',
-                                        fontWeight: 500,
-                                        position: 'relative',
-                                        top: '2px',
-                                    }}
-                                    >
-                                    {parent.label}
-                                    </Typography>
-                                }
-                                sx={{
-                                    opacity: isDrawerExpanded ? 1 : 0,
-                                    transition: 'opacity 0.2s',
-                                    whiteSpace: 'nowrap',
-                                    width: '100%',
-                                }}
-                                />
-                                {isDrawerExpanded && (
-                                  openParents[parent.key]
-                                    ? <ExpandLess sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 18 }} />
-                                    : <ExpandMore sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 18 }} />
-                                )}
-                            </ListItemButton>
-                            <Collapse in={openParents[parent.key]} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding>
-                                {parent.children.map((child) => (
-                                    <ListItemButton
-                                    key={child.key}
-                                    onClick={() => {
-                                      handleChildClick(parent.key, child.key);
-
-                                      const routes = {
-                                        stock: '/stock-actual',
-                                        entrada: '/registros-entrada',
-                                        salida: '/registros-salida',
-                                        bloqueos: '/bloquear-registros',
-                                        flujo: '/flujo',
-                                        auditoria: '/control-auditoria',
-                                        productos: '/productos',
-                                        categorias: '/categorias',
-                                        unidad: '/unidad-medida',
-                                        movimientos: '/tipos-movimientos',
-                                      };
-                                      navigate(routes[child.key]);
-                                    }}
-                                    sx={{
-                                        minHeight: 28,
+                                        minHeight: 32,
                                         px: 1.5,
                                         justifyContent: 'initial',
                                         borderRadius: 1,
                                         mx: 0.25,
-                                        my: 0.15,
-                                        bgcolor:
-                                        selected.parent === parent.key && selected.child === child.key
-                                            ? plomo
-                                            : 'transparent',
-                                        color:
-                                        selected.parent === parent.key && selected.child === child.key
-                                            ? azul
-                                            : 'rgb(84, 84, 84)',
-                                        fontWeight:
-                                        selected.parent === parent.key && selected.child === child.key
-                                            ? 700
-                                            : 400,
-                                        '&:hover': { bgcolor: plomo, color: azul },
+                                        my: 0.25,
+                                        bgcolor: selected.parent === parent.key ? azul : 'transparent',
+                                        color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)',
+                                        '&:hover': { bgcolor: azul, color: 'white' },
+                                        fontWeight: selected.parent === parent.key ? 700 : 500,
                                     }}
-                                    >
-                                    <ListItemIcon sx={{ color: selected.parent === parent.key && selected.child === child.key ? azul : 'rgb(150, 150, 150)', minWidth: 0, justifyContent: 'center', mr: 1 }}>
-                                        {child.icon}
+                                >
+                                    <ListItemIcon sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(33, 33, 33)', minWidth: 0, justifyContent: 'center', mr: 1, fontSize: 17 }}>
+                                        {parent.icon}
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={
-                                          <Typography fontSize={12} sx={{ position: 'relative', top: '2px' }}>
-                                            {child.label}
-                                          </Typography>
+                                            <Typography
+                                                fontSize={12}
+                                                sx={{
+                                                    color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)',
+                                                    fontWeight: 500,
+                                                    position: 'relative',
+                                                    top: '2px',
+                                                }}
+                                            >
+                                                {parent.label}
+                                            </Typography>
                                         }
                                         sx={{
-                                        opacity: isDrawerExpanded ? 1 : 0,
-                                        transition: 'opacity 0.2s',
-                                        whiteSpace: 'nowrap',
-                                        width: '100%',
+                                            opacity: isDrawerExpanded ? 1 : 0,
+                                            transition: 'opacity 0.2s',
+                                            whiteSpace: 'nowrap',
+                                            width: '100%',
                                         }}
                                     />
-                                    </ListItemButton>
-                                ))}
-                                </List>
-                            </Collapse>
+                                    {isDrawerExpanded && (
+                                        openParents[parent.key]
+                                            ? <ExpandLess sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 18 }} />
+                                            : <ExpandMore sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 18 }} />
+                                    )}
+                                </ListItemButton>
+                                <Collapse in={openParents[parent.key]} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        {parent.children.map((child) => (
+                                            <ListItemButton
+                                                key={child.key}
+                                                onClick={() => {
+                                                    handleChildClick(parent.key, child.key);
+
+                                                    const routes = {
+                                                        stock: '/stock-actual',
+                                                        entrada: '/registros-entrada',
+                                                        salida: '/registros-salida',
+                                                        bloqueos: '/bloquear-registros',
+                                                        flujo: '/flujo',
+                                                        auditoria: '/control-auditoria',
+                                                        productos: '/productos',
+                                                        categorias: '/categorias',
+                                                        unidad: '/unidad-medida',
+                                                        movimientos: '/tipos-movimientos',
+                                                    };
+                                                    navigate(routes[child.key]);
+                                                }}
+                                                sx={{
+                                                    minHeight: 28,
+                                                    px: 1.5,
+                                                    justifyContent: 'initial',
+                                                    borderRadius: 1,
+                                                    mx: 0.25,
+                                                    my: 0.15,
+                                                    bgcolor:
+                                                        selected.parent === parent.key && selected.child === child.key
+                                                            ? plomo
+                                                            : 'transparent',
+                                                    color:
+                                                        selected.parent === parent.key && selected.child === child.key
+                                                            ? azul
+                                                            : 'rgb(84, 84, 84)',
+                                                    fontWeight:
+                                                        selected.parent === parent.key && selected.child === child.key
+                                                            ? 700
+                                                            : 400,
+                                                    '&:hover': { bgcolor: plomo, color: azul },
+                                                }}
+                                            >
+                                                <ListItemIcon sx={{ color: selected.parent === parent.key && selected.child === child.key ? azul : 'rgb(150, 150, 150)', minWidth: 0, justifyContent: 'center', mr: 1 }}>
+                                                    {child.icon}
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={
+                                                        <Typography fontSize={12} sx={{ position: 'relative', top: '2px' }}>
+                                                            {child.label}
+                                                        </Typography>
+                                                    }
+                                                    sx={{
+                                                        opacity: isDrawerExpanded ? 1 : 0,
+                                                        transition: 'opacity 0.2s',
+                                                        whiteSpace: 'nowrap',
+                                                        width: '100%',
+                                                    }}
+                                                />
+                                            </ListItemButton>
+                                        ))}
+                                    </List>
+                                </Collapse>
                             </Box>
                         ))}
-                        </List>
+                    </List>
                 </Box>
             </Box>
-
-            
         </Box>
     );
 }

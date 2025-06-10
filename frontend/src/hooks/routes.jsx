@@ -11,7 +11,6 @@ import Productos from '../pages/config/Productos';
 import Categorias from '../pages/config/Categorias';
 import UnidadMedida from '../pages/config/UnidadMedida';
 import TiposMovimientos from '../pages/config/TiposMovimientos';
-import Home from '../pages/Home';
 import React, { useState } from 'react';
 import NewAppBar from '../pages/NewAppBar';
 
@@ -26,27 +25,27 @@ function usePageTitle() {
   const location = useLocation();
   switch (location.pathname.toLowerCase()) {
     case '/registros-entrada':
-      return 'Registros';
+      return 'Entrada';
     case '/registros-salida':
-      return 'Registros';
+      return 'Salida';
     case '/stock-actual':
-      return 'Registros';
+      return 'Stock Actual';
     case '/bloquear-registros':
-      return 'Registros';
+      return 'Bloquear Registros';
     case '/flujo':
       return 'Flujo';
     case '/control-auditoria':
-      return 'Configuración';
+      return 'Configuración Auditoría';
     case '/productos':
-      return 'Configuración';
+      return 'Configuración Productos';
     case '/categorias':
-      return 'Configuración';
+      return 'Configuración Categorías';
     case '/unidad-medida':
-      return 'Configuración';
+      return 'Configuración Unidad de Medida';
     case '/tipos-movimientos':
-      return 'Configuración';
+      return 'Configuración Tipos de Movimientos';
     default:
-      return 'Home';
+      return 'Stock Actual';
   }
 }
 
@@ -70,7 +69,7 @@ export default function AppContent() {
         }}
       >
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<StockActual />} />
           <Route path="/stock-actual" element={<StockActual />} />
           <Route path="/registros-entrada" element={<RegistrosEntrada />} />
           <Route path="/registros-salida" element={<RegistrosSalida />} />
