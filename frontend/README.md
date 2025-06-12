@@ -1,12 +1,78 @@
-# React + Vite
+# ERP Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es el frontend de un sistema ERP desarrollado en React y Vite, utilizando Material UI para la interfaz y React Router para la navegación.  
+Incluye un layout responsivo con sidebar (Drawer), AppBar, y manejo de rutas anidadas.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Características principales
 
-## Expanding the ESLint configuration
+- ⚡️ **React + Vite** para desarrollo rápido y moderno.
+- 🎨 **Material UI** para componentes visuales y diseño responsivo.
+- 🧭 **React Router v6** para navegación y rutas anidadas.
+- 🗂️ **Context API** para manejo global del estado del Drawer (sidebar).
+- 💡 **Animaciones suaves** y transiciones en el layout.
+- 📱 **Totalmente responsivo**: experiencia optimizada para escritorio y móvil.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tuusuario/erp-frontend.git
+   cd erp-frontend/frontend
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── components/
+│   └── constants/layout.js      # Constantes de layout (Drawer, AppBar, animaciones)
+├── pages/
+│   ├── context/DrawerContext.jsx # Contexto global para el Drawer
+│   ├── layout/AppLayout.jsx      # Layout principal (AppBar + Drawer + contenido)
+│   ├── NewAppBar.jsx             # Barra superior de navegación
+│   └── stock/StockActual.jsx     # Ejemplo de página de contenido
+├── hooks/
+│   └── routes.jsx                # Definición de rutas y títulos de página
+├── App.css
+├── index.css
+└── main.jsx
+```
+
+---
+
+## Uso y personalización
+
+- Modifica las constantes en `src/components/constants/layout.js` para ajustar tamaños y animaciones.
+- Agrega nuevas páginas en `src/pages/` y rutas en `src/hooks/routes.jsx`.
+- Personaliza el diseño global en `App.css` e `index.css`.
+
+---
+
+## Créditos
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [Material UI](https://mui.com/)
+- [React Router](https://reactrouter.com/)
+
+---
+
+## Notas
+
+ Infotrmation: `DOCUMENTATION.txt`.

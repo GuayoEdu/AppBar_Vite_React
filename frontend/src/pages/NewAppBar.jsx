@@ -1,7 +1,7 @@
 import { useMediaQuery } from 'usehooks-ts';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
@@ -33,32 +33,77 @@ import ManageHistoryRoundedIcon from '@mui/icons-material/ManageHistoryRounded';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import { useDrawer } from './context/DrawerContext';
+import { DRAWER_HEADER_HEIGHT, DRAWER_WIDTH, MINI_DRAWER_WIDTH, ANIMATION_DURATION } from '../components/constants/layout';
 
-const drawerHeaderHeight = 48;
-const drawerWidth = 230;
-const miniDrawerWidth = 76;
+const drawerHeaderHeight = DRAWER_HEADER_HEIGHT;
+const drawerWidth = DRAWER_WIDTH;
+const miniDrawerWidth = MINI_DRAWER_WIDTH;
 const duration = 200;
 
-export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
+export default function NewAppBar({ title }) {
+    const {
+        drawerOpen,
+        setDrawerOpen,
+        drawerHover,
+        setDrawerHover,
+        isDrawerExpanded,
+    } = useDrawer();
+
     const isMobile = useMediaQuery('(max-width: 600px)');
-    const [drawerHover, setDrawerHover] = useState(false);
     const theme = useTheme();
     const navigate = useNavigate();
-
-    const isDrawerExpanded = drawerOpen || (!drawerOpen && drawerHover);
+    const location = useLocation();
     const azul = 'rgb(37, 118, 240)';
     const plomo = '#e0e0e0';
 
-    const [openParents, setOpenParents] = useState({
-        registros: false,
-        flujo: false,
-        config: false,
-    });
-    const [selected, setSelected] = useState({ parent: 'config', child: 'categorias' });
+    // Mapea rutas a parent/child
+    const routeMap = {
+        '/stock-actual': { parent: 'registros', child: 'stock' },
+        '/registros-entrada': { parent: 'registros', child: 'entrada' },
+        '/registros-salida': { parent: 'registros', child: 'salida' },
+        '/bloquear-registros': { parent: 'registros', child: 'bloqueos' },
+        '/flujo': { parent: 'flujo', child: 'flujo' },
+        '/control-auditoria': { parent: 'config', child: 'auditoria' },
+        '/productos': { parent: 'config', child: 'productos' },
+        '/categorias': { parent: 'config', child: 'categorias' },
+        '/unidad-medida': { parent: 'config', child: 'unidad' },
+        '/tipos-movimientos': { parent: 'config', child: 'movimientos' },
+    };
 
-    const handleParentClick = (key) => {
-        setOpenParents((prev) => ({ ...prev, [key]: !prev[key] }));
-        setSelected((prev) => ({ ...prev, parent: key }));
+    // Detecta parent/child según la ruta actual
+    const current = routeMap[location.pathname] || { parent: '', child: '' };
+
+    // Estado inicial: solo el parent correspondiente abierto
+    const [openParents, setOpenParents] = useState({
+        registros: current.parent === 'registros',
+        flujo: current.parent === 'flujo',
+        config: current.parent === 'config',
+    });
+
+    // Estado inicial: hijo seleccionado según la ruta
+    const [selected, setSelected] = useState({
+        parent: current.parent,
+        child: current.child,
+    });
+
+    // Si la ruta cambia, actualiza el estado seleccionado y el parent abierto
+    useEffect(() => {
+        setSelected({ parent: current.parent, child: current.child });
+        if (current.parent) {
+            setOpenParents((prev) => ({
+                ...prev,
+                [current.parent]: true, // Solo abre el padre de la ruta actual, los demás quedan igual
+            }));
+        }
+    }, [location.pathname]);
+
+    const handleParentClick = (parentKey) => {
+        setOpenParents((prev) => ({
+            ...prev,
+            [parentKey]: !prev[parentKey], // Solo cambia el parent seleccionado, los demás quedan igual
+        }));
+        setSelected((prev) => ({ ...prev, parent: parentKey }));
     };
 
     const handleChildClick = (parentKey, childKey) => {
@@ -99,19 +144,24 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
         },
     ];
 
+    useEffect(() => {
+        if (isMobile && drawerHover) {
+            setDrawerHover(false);
+        }
+    }, [isMobile, drawerHover, setDrawerHover]);
+
     return (
-        <Box sx={{ display: 'flex', flexGrow: 1 }}>
-            {/* AppBar superior */}
+        <>
             <AppBar
-                position="absolute"
+                position="relative"
                 sx={{
-                    ml: isMobile ? 0 : `${drawerOpen ? drawerWidth : miniDrawerWidth}px`,
-                    width: isMobile ? '100%' : `calc(100% - ${drawerOpen ? drawerWidth : miniDrawerWidth}px)`,
-                    transition: theme.transitions.create(['margin-left', 'width'], {
+                    left: { xs: 0, sm: drawerOpen ? DRAWER_WIDTH : MINI_DRAWER_WIDTH },
+                    width: { xs: '100%', sm: `calc(100% - ${drawerOpen ? DRAWER_WIDTH : MINI_DRAWER_WIDTH}px)` },
+                    transition: theme.transitions.create(['left', 'width'], {
                         easing: theme.transitions.easing.sharp,
-                        duration: duration,
+                        duration: ANIMATION_DURATION,
                     }),
-                    height: drawerHeaderHeight,
+                    height: DRAWER_HEADER_HEIGHT,
                     bgcolor: 'rgb(255, 255, 255)',
                     boxShadow: 'none',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
@@ -196,7 +246,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                 </Toolbar>
             </AppBar>
 
-            {/* Overlay para mobile */}
             {isMobile && drawerOpen && (
                 <Box
                     onClick={() => setDrawerOpen(false)}
@@ -228,8 +277,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                     }}
                 />
             )}
-
-            {/* Sidebar */}
             <Box
                 onMouseEnter={() => !isMobile && setDrawerHover(true)}
                 onMouseLeave={() => !isMobile && setDrawerHover(false)}
@@ -323,30 +370,30 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                 <ListItemButton
                                     onClick={() => handleParentClick(parent.key)}
                                     sx={{
-                                        minHeight: 32,
-                                        px: 1.5,
+                                        minHeight: 22, 
+                                        px: 1,        
                                         justifyContent: 'initial',
                                         borderRadius: 1,
-                                        mx: 0.25,
-                                        my: 0.25,
+                                        mx: 1,      
+                                        my: 0.15,      
                                         bgcolor: selected.parent === parent.key ? azul : 'transparent',
                                         color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)',
                                         '&:hover': { bgcolor: azul, color: 'white' },
                                         fontWeight: selected.parent === parent.key ? 700 : 500,
                                     }}
                                 >
-                                    <ListItemIcon sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(33, 33, 33)', minWidth: 0, justifyContent: 'center', mr: 1, fontSize: 17 }}>
+                                    <ListItemIcon sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(33, 33, 33)', minWidth: 0, justifyContent: 'center', mr: 0.5, fontSize: 15 }}>
                                         {parent.icon}
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={
                                             <Typography
-                                                fontSize={12}
+                                                fontSize={11}
                                                 sx={{
                                                     color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)',
                                                     fontWeight: 500,
                                                     position: 'relative',
-                                                    top: '2px',
+                                                    top: '1.5px',
                                                 }}
                                             >
                                                 {parent.label}
@@ -361,8 +408,8 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                     />
                                     {isDrawerExpanded && (
                                         openParents[parent.key]
-                                            ? <ExpandLess sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 18 }} />
-                                            : <ExpandMore sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 18 }} />
+                                            ? <ExpandLess sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 16 }} />
+                                            : <ExpandMore sx={{ color: selected.parent === parent.key ? 'white' : 'rgb(84, 84, 84)', fontSize: 16 }} />
                                     )}
                                 </ListItemButton>
                                 <Collapse in={openParents[parent.key]} timeout="auto" unmountOnExit>
@@ -388,12 +435,12 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                                     navigate(routes[child.key]);
                                                 }}
                                                 sx={{
-                                                    minHeight: 28,
-                                                    px: 1.5,
+                                                    minHeight: 22, 
+                                                    px: 1,         
                                                     justifyContent: 'initial',
                                                     borderRadius: 1,
-                                                    mx: 0.25,
-                                                    my: 0.15,
+                                                    mx: 1,      
+                                                    my: 0.10,      
                                                     bgcolor:
                                                         selected.parent === parent.key && selected.child === child.key
                                                             ? plomo
@@ -409,12 +456,12 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                                                     '&:hover': { bgcolor: plomo, color: azul },
                                                 }}
                                             >
-                                                <ListItemIcon sx={{ color: selected.parent === parent.key && selected.child === child.key ? azul : 'rgb(150, 150, 150)', minWidth: 0, justifyContent: 'center', mr: 1 }}>
+                                                <ListItemIcon sx={{ color: selected.parent === parent.key && selected.child === child.key ? azul : 'rgb(150, 150, 150)', minWidth: 0, justifyContent: 'center', mr: 0.5 }}>
                                                     {child.icon}
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={
-                                                        <Typography fontSize={12} sx={{ position: 'relative', top: '2px' }}>
+                                                        <Typography fontSize={10} sx={{ position: 'relative', top: '1.5px' }}>
                                                             {child.label}
                                                         </Typography>
                                                     }
@@ -434,6 +481,6 @@ export default function NewAppBar({ title, drawerOpen, setDrawerOpen }) {
                     </List>
                 </Box>
             </Box>
-        </Box>
+        </>
     );
 }

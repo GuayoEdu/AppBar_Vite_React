@@ -1,0 +1,115 @@
+ERP Frontend - Descripción General y Guía de Uso del Código
+===========================================================
+
+Este documento proporciona una visión profesional y explicación de los principales componentes, contextos y lógica de layout del proyecto frontend de ERP. Está pensado como manual de uso y referencia para desarrolladores.
+
+---
+
+1. Contexto del Drawer (`src/pages/context/DrawerContext.jsx`)
+--------------------------------------------------------------
+- **Propósito:**  
+  Provee un Contexto de React para gestionar el estado del sidebar (Drawer) en toda la aplicación.
+
+- **Estados Clave:**
+  - `drawerOpen`: Booleano, indica si el Drawer está abierto.
+  - `drawerHover`: Booleano, indica si el Drawer está siendo hovered (para el efecto mini/expandido).
+  - `isDrawerExpanded`: Booleano, verdadero si el Drawer está abierto o hovered.
+  - `currentDrawerWidth`: Número, el ancho actual del Drawer según su estado.
+
+- **Uso:**  
+  Envuelve tu app con `<DrawerProvider>`.  
+  Usa el hook `useDrawer()` en los componentes para acceder y controlar el estado del Drawer.
+
+---
+
+2. Constantes de Layout (`src/components/constants/layout.js`)
+-------------------------------------------------------------
+- **Propósito:**  
+  Centraliza las constantes relacionadas al layout para tamaños y animaciones consistentes.
+
+- **Exporta:**
+  - `DRAWER_HEADER_HEIGHT`: Altura del header del AppBar/Drawer (en px).
+  - `DRAWER_WIDTH`: Ancho del Drawer expandido (en px).
+  - `MINI_DRAWER_WIDTH`: Ancho del Drawer colapsado (en px).
+  - `ANIMATION_DURATION`: Duración de las transiciones del Drawer/contenido (en ms).
+
+---
+
+3. Layout Principal (`src/pages/layout/AppLayout.jsx`)
+------------------------------------------------------
+- **Propósito:**  
+  Provee el layout principal de la página, incluyendo AppBar (barra superior), Drawer (sidebar) y área de contenido.
+
+- **Características Clave:**
+  - Usa `useDrawer()` para determinar el estado y ancho del Drawer.
+  - Aplica `padding-left` al área de contenido para evitar que el Drawer lo tape (en escritorio).
+  - Aplica `padding-top` para evitar que el AppBar tape el contenido.
+  - En móviles (`xs`), elimina el padding izquierdo para que el contenido use todo el ancho.
+  - Anima los cambios de padding para que coincidan con la transición del Drawer.
+  - Usa `<Outlet />` de React Router para rutas anidadas.
+
+---
+
+4. AppBar (`src/pages/NewAppBar.jsx`)
+-------------------------------------
+- **Propósito:**  
+  Renderiza la barra de navegación superior, incluyendo el botón de menú, título y acciones de usuario.
+
+- **Características Clave:**
+  - Responsive: ajusta el layout y el Drawer para móvil y escritorio.
+  - El ancho y posición del AppBar se calculan dinámicamente para alinearse con el Drawer.
+  - Incluye lógica de navegación y acciones de usuario (ej: botón de cerrar sesión).
+
+---
+
+5. Página de Ejemplo (`src/pages/stock/StockActual.jsx`)
+--------------------------------------------------------
+- **Propósito:**  
+  Ejemplo de una página de contenido usando el layout y componentes de MUI.
+
+- **Características Clave:**
+  - Usa un `Box` blanco con bordes redondeados y sombra como tarjeta principal.
+  - La barra azul de encabezado es flush con la tarjeta (sin padding extra).
+  - Márgenes: margen izquierdo pequeño (`ml`) y 1% a la derecha (`mr`) para separación.
+  - Responsive: márgenes y padding se ajustan para móvil y escritorio.
+  - El área de contenido es flexible y se adapta al tamaño de pantalla.
+
+---
+
+6. Estilos Globales (`src/App.css` y `src/index.css`)
+-----------------------------------------------------
+- **Propósito:**  
+  Asegura que la app use todo el viewport, previene scrollbars no deseados y aplica un fondo consistente.
+
+- **Características Clave:**
+  - Define `width: 100vw` y `overflow-x: hidden` en `html`, `body` y `#root`.
+  - Tamaños de fuente responsivos para móvil.
+  - Color de fondo acorde al layout por defecto.
+
+---
+
+7. Ruteo (`src/hooks/routes.jsx`)
+---------------------------------
+- **Propósito:**  
+  Define las rutas de la aplicación y los títulos de página.
+
+- **Características Clave:**
+  - Usa rutas anidadas de React Router v6.
+  - Envuelve todas las páginas principales con `AppLayout`.
+  - Define dinámicamente el título de la página según la ruta actual.
+
+---
+
+Notas de Uso
+------------
+- **Responsividad:**  
+  El layout y los componentes están diseñados para ser totalmente responsivos. En móvil, el Drawer se superpone al contenido y el contenido usa todo el ancho.
+
+- **Personalización:**  
+  Ajusta las constantes en `layout.js` para cambiar tamaños del Drawer/AppBar o la velocidad de animación.  
+  Modifica márgenes y paddings en los componentes de página para personalizar el espaciado.
+
+- **Extensibilidad:**  
+  Agrega nuevas páginas creando un componente y añadiendo una ruta en `routes.jsx`.
+
+---
