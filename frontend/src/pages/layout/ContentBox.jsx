@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 
-export default function ContentBox({ children, title, collapsible = false }) {
+export default function ContentBox({ children, title, collapsible = false, action, sx = {} }) {
   const [open, setOpen] = useState(true);
 
   return (
@@ -14,28 +14,27 @@ export default function ContentBox({ children, title, collapsible = false }) {
         bgcolor: "#fff",
         borderRadius: 2,
         boxShadow: 1,
-        p: 0, // Sin padding para que la barra azul sea flush
-        width: "auto",
+        p: 0,
+        width: "100%",
         minWidth: 0,
         mt: 0,
         mb: 2,
         minHeight: "50px",
-        ml: { xs: "5px", sm: "10px" }, // pequeña separación izquierda
-        mr: "1%",                      // 1% separación derecha
         display: "flex",
         flexDirection: "column",
-        gap: 2,
+        maxHeight: "100%",
+        ...sx,
       }}
     >
       <Box
         sx={{
           bgcolor: "#0084ff",
           color: "#fff",
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
+          borderTopLeftRadius: 4,
+          borderTopRightRadius: 4,
           p: 1,
           fontWeight: 600,
-          fontSize: { xs: 16, sm: 20, md: 22 }, // Responsivo
+          fontSize: { xs: 16, sm: 20, md: 22 },
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
@@ -46,7 +45,7 @@ export default function ContentBox({ children, title, collapsible = false }) {
         }}
         onClick={collapsible ? () => setOpen((prev) => !prev) : undefined}
       >
-        <span style={{ flex: 1, minWidth: 0 }}>{title}</span>
+        <span style={{ flex: 1, minWidth: 0, marginLeft: 10 }}>{title}</span>
         {collapsible && (
           <IconButton
             size="small"
@@ -60,9 +59,39 @@ export default function ContentBox({ children, title, collapsible = false }) {
           </IconButton>
         )}
       </Box>
-      <Collapse in={collapsible ? open : true} timeout="auto">
-        <Box sx={{ p: { xs: 2, sm: 4 } }}>{children}</Box>
+
+      <Collapse in={collapsible ? open : true} timeout="auto" unmountOnExit>
+        <Box
+          sx={{
+            p: { xs: 2, sm: 3 },
+            pt: { xs: 2, sm: 1 },
+            overflowY: "auto",
+            maxHeight: { xs: "60vh", sm: "65vh", md: "70vh" },
+          }}
+        >
+          {children}
+        </Box>
       </Collapse>
+
+      {action && (
+        <Box
+          sx={{
+            bgcolor: "#f5f5f5",
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            py: 1,
+            px: 2,
+            borderBottomLeftRadius: 4,
+            borderBottomRightRadius: 4,
+            borderTop: "1px solid #e0e0e0",
+            minHeight: 48,
+          }}
+        >
+          {action}
+        </Box>
+      )}
     </Box>
   );
 }
